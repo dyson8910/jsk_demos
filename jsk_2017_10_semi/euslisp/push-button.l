@@ -18,15 +18,35 @@
 (setq *kettle* (send *room* :object "room73b2-kettle"))
 (if (send *kettle* :parent) (send (send *kettle* :parent) :dissoc *kettle*))
 
-(setq *IH-botton* (make-coords :pos #f(685 1570 700)))
-(send *IH-botton* :rotate pi :z)
+(setq *IH-button* (make-coords :pos #f(685 1570 700)))
+(send *IH-button* :rotate pi :z)
+(setq *IH-button-front* (make-coords :pos #f(695 1570 700)))
+(send *IH-button-front* :rotate pi :z)
 
-(send *fetch* :rarm :inverse-kinematics *IH-botton*
+
+(send *fetch* :rarm :inverse-kinematics *IH-button-front*
       :link-list (send *fetch* :link-list (send *fetch* :rarm :end-coords :parent))
       :move-target (send *fetch* :rarm :end-coords)
       :rotation-axis :x
       :debug-view t :p-limit 10 :r-limit 0.05;;
       :cog-null-space t
       )
+
+(send *fetch* :rarm :inverse-kinematics *IH-button*
+      :link-list (send *fetch* :link-list (send *fetch* :rarm :end-coords :parent))
+      :move-target (send *fetch* :rarm :end-coords)
+      :rotation-axis :x
+      :debug-view t :p-limit 10 :r-limit 0.05;;
+      :cog-null-space t
+      )
+
+(send *fetch* :rarm :inverse-kinematics *IH-button-front*
+      :link-list (send *fetch* :link-list (send *fetch* :rarm :end-coords :parent))
+      :move-target (send *fetch* :rarm :end-coords)
+      :rotation-axis :x
+      :debug-view t :p-limit 10 :r-limit 0.05;;
+      :cog-null-space t
+      )
+
 
 (send *ri* :angle-vector (send *fetch* :angle-vector) 1000)
