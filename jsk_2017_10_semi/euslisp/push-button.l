@@ -2,70 +2,90 @@
 
 (ros::load-ros-manifest "roseus")
 
-(load "package://fetcheus/fetch-interface.l")
-(fetch-init)
+(load "package://pr2eus/pr2-interface.l")
+(pr2-init)
 
-(load "models/room73b2-scene.l")
-(setq *room* (room73b2))
+(load "package://jsk_maps/src/eng2-scene.l")
+(setq *scene* (make-eng2-scene))
 
-(objects (list *fetch* *room*))
-(send *irtviewer* :look-all *fetch*)
+(send *pr2* :move-to (send (send *scene* :spot "/eng2/7f/room73B2-door-front") :worldcoords) :world)
+(send *ri* :move-to (send (send *scene* :spot "/eng2/7f/room73B2-door-front") :worldcoords))
+(objects (list *pr2* *scene*))
+(send *irtviewer* :look-all *pr2*)
 
-(send *fetch* :move-to (send *room* :spot "cook-spot") :world)
-(send *ri* :move-to (send *room* :spot "cook-spot") :frame-id "/map")
+(do-until-key
+ (x::window-main-one)
+ )
+
+(send *pr2* :move-to (send (send *scene* :spot "cook-spot") :worldcoords) :world)
+
+(send *ri* :move-to (send (send *scene* :spot "cook-spot") :worldcoords))
 (send *ri* :wait-interpolation)
-(objects (list *fetch* *room*))
-(send *irtviewer* :look-all *fetch*)
+(objects (list *pr2* *scene*))
+(send *irtviewer* :look-all *pr2*)
 
 (send *ri* :wait-interpolation)
 
-(setq *kettle* (send *room* :object "room73b2-kettle"))
-(if (send *kettle* :parent) (send (send *kettle* :parent) :dissoc *kettle*))
-
-(setq *IH-button* (make-coords :pos #f(685 1570 700)))
+(setq *IH-button* (make-coords :pos #f(660 8470 30702)))
 (send *IH-button* :rotate pi :z)
-(setq *IH-button-front* (make-coords :pos #f(695 1570 700)))
+(setq *IH-button-front* (make-coords :pos #f(695 8470 30702)))
 (send *IH-button-front* :rotate pi :z)
 
-(send *fetch* :reset-pose)
-(send *ri* :angle-vector (send *fetch* :angle-vector) 1000)
+(send *pr2* :reset-pose)
+(send *ri* :angle-vector (send *pr2* :angle-vector) 1000)
 (send *irtviewer* :draw-objects)
 (send *ri* :wait-interpolation)
 
-(send *fetch* :rarm :inverse-kinematics *IH-button-front*
-      :link-list (send *fetch* :link-list (send *fetch* :rarm :end-coords :parent))
-      :move-target (send *fetch* :rarm :end-coords)
+(do-until-key
+ (x::window-main-one)
+ )
+
+(send *pr2* :rarm :inverse-kinematics *IH-button-front*
+      :link-list (send *pr2* :link-list (send *pr2* :rarm :end-coords :parent))
+      :move-target (send *pr2* :rarm :end-coords)
       :rotation-axis :x
       :debug-view t :p-limit 10 :r-limit 0.05;;
       :cog-null-space t
       )
 
-(send *ri* :angle-vector (send *fetch* :angle-vector) 5000)
+(send *ri* :angle-vector (send *pr2* :angle-vector) 5000)
 (send *ri* :wait-interpolation)
 
-(send *fetch* :rarm :inverse-kinematics *IH-button*
-      :link-list (send *fetch* :link-list (send *fetch* :rarm :end-coords :parent))
-      :move-target (send *fetch* :rarm :end-coords)
+(do-until-key
+ (x::window-main-one)
+ )
+
+(send *pr2* :rarm :inverse-kinematics *IH-button*
+      :link-list (send *pr2* :link-list (send *pr2* :rarm :end-coords :parent))
+      :move-target (send *pr2* :rarm :end-coords)
       :rotation-axis :x
       :debug-view t :p-limit 10 :r-limit 0.05;;
       :cog-null-space t
       )
 
-(send *ri* :angle-vector (send *fetch* :angle-vector) 5000)
+(send *ri* :angle-vector (send *pr2* :angle-vector) 5000)
 (send *ri* :wait-interpolation)
 
-(send *fetch* :rarm :inverse-kinematics *IH-button-front*
-      :link-list (send *fetch* :link-list (send *fetch* :rarm :end-coords :parent))
-      :move-target (send *fetch* :rarm :end-coords)
+(do-until-key
+ (x::window-main-one)
+ )
+
+(send *pr2* :rarm :inverse-kinematics *IH-button-front*
+      :link-list (send *pr2* :link-list (send *pr2* :rarm :end-coords :parent))
+      :move-target (send *pr2* :rarm :end-coords)
       :rotation-axis :x
       :debug-view t :p-limit 10 :r-limit 0.05;;
       :cog-null-space t
       )
 
-(send *ri* :angle-vector (send *fetch* :angle-vector) 5000)
+(send *ri* :angle-vector (send *pr2* :angle-vector) 5000)
 (send *ri* :wait-interpolation)
 
-(send *fetch* :reset-pose)
-(send *ri* :angle-vector (send *fetch* :angle-vector) 1000)
+(do-until-key
+ (x::window-main-one)
+ )
+
+(send *pr2* :reset-pose)
+(send *ri* :angle-vector (send *pr2* :angle-vector) 1000)
 (send *irtviewer* :draw-objects)
 (send *ri* :wait-interpolation)
