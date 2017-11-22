@@ -1,79 +1,96 @@
 #!/usr/bin/env roseus
 (ros::load-ros-manifest "roseus")
 
-(load "package://fetcheus/fetch-interface.l")
-(fetch-init)
-(load "models/room73b2-scene.l")
-(setq *room* (room73b2))
+(load "package://pr2eus/pr2-interface.l")
+(pr2-init)
 
-(setq *cook-spot-* (make-cascoords :pos #f(1300 1600 0) :rpy (float-vector pi 0 0)))
-(send *fetch* :move-to *cook-spot-* :world)
+(load "package://jsk_maps/src/eng2-scene.l")
+(setq *scene* (make-eng2-scene))
+
+(setq *cook-spot-* (make-coords :pos #f(1200 8500 30002)))
+(send *cook-spot-* :rotate pi :z)
+
+(send *pr2* :move-to *cook-spot-* :world)
 (send *ri* :move-to *cook-spot-* :fram-id "/map")
 
-(objects (list *fetch* *room*))
-(send *irtviewer* :look-all *fetch*)
+(objects (list *pr2* *scene*))
+(send *irtviewer* :look-all *pr2*)
 (send *ri* :wait-interpolation)
 
-(send *fetch* :reset-pose)
-(send *ri* :angle-vector (send *fetch* :angle-vector) 1000)
+(send *pr2* :reset-pose)
+(send *ri* :angle-vector (send *pr2* :angle-vector) 1000)
 (send *irtviewer* :draw-objects)
 (send *ri* :wait-interpolation)
 
-(setq *kettle* (send *room* :object "room73b2-kettle"))
-(if (send *kettle* :parent) (send (send *kettle* :parent) :dissoc *kettle*))
-
-(setq *kettle-handle* (car (send *kettle* :handle)))
+(setq *kettle-handle* (make-coords :pos #f(500 8470 31020)))
+(send *kettle-handle* :rotate pi/2 :x)
 (send *kettle-handle* :rotate pi :z)
-(send *kettle-handle* :rotate pi/2 :y)
-(setq *kettle-handle-front* (make-cascoords :pos #f(650 1500 1020)))
+
+(setq *kettle-handle-front* (make-coords :pos #f(660 8470 31020)))
 (send *kettle-handle-front* :rotate pi/2 :x)
 (send *kettle-handle-front* :rotate pi :z)
-      
-(send *fetch* :rarm :inverse-kinematics *kettle-handle-front*
+
+(do-until-key
+ (x::window-main-one)
+ )
+
+(send *pr2* :rarm :inverse-kinematics *kettle-handle-front*
       :stop 200
-      :link-list (send *fetch* :link-list (send *fetch* :rarm :end-coords :parent))
-      :move-target (send *fetch* :rarm :end-coords)
+      :link-list (send *pr2* :link-list (send *pr2* :rarm :end-coords :parent))
+      :move-target (send *pr2* :rarm :end-coords)
       :rotation-axis t
+      :translation-axis :z
       :debug-view t
       :p-limit 10 :r-limit 0.05
       :cog-null-space t)
 
-(send *ri* :angle-vector (send *fetch* :angle-vector) 5000)
+(send *ri* :angle-vector (send *pr2* :angle-vector) 5000)
 (send *ri* :stop-grasp)
 (send *ri* :wait-interpolation)
 
-(send *fetch* :rarm :inverse-kinematics *kettle-handle*
+(do-until-key
+ (x::window-main-one)
+ )
+
+(send *pr2* :rarm :inverse-kinematics *kettle-handle*
       :stop 200
-      :link-list (send *fetch* :link-list (send *fetch* :rarm :end-coords :parent))
-      :move-target (send *fetch* :rarm :end-coords)
+      :link-list (send *pr2* :link-list (send *pr2* :rarm :end-coords :parent))
+      :move-target (send *pr2* :rarm :end-coords)
       :rotation-axis t
       :debug-view t
       :p-limit 10 :r-limit 0.05
       :cog-null-space t)
 
-(send *ri* :angle-vector (send *fetch* :angle-vector) 5000)
+(send *ri* :angle-vector (send *pr2* :angle-vector) 5000)
 (send *ri* :wait-interpolation)
 
-(send *ri* :start-grasp)
-(send (send *fetch* :rarm :end-coords) :assoc *kettle*)
+(send *ri* :start-grasp :rarm)
 
-(setq *kettle-handle-above* (make-cascoords :pos #f(500 1500 1200)))
+(do-until-key
+ (x::window-main-one)
+ )
+
+(setq *kettle-handle-above* (make-cascoords :pos #f(500 8470 31102)))
 (send *kettle-handle-above* :rotate pi/2 :x)
 (send *kettle-handle-above* :rotate pi :z)
 
-(send *fetch* :rarm :inverse-kinematics *kettle-handle-above*
+(send *pr2* :rarm :inverse-kinematics *kettle-handle-above*
       :stop 200
-      :link-list (send *fetch* :link-list (send *fetch* :rarm :end-coords :parent))
-      :move-target (send *fetch* :rarm :end-coords)
+      :link-list (send *pr2* :link-list (send *pr2* :rarm :end-coords :parent))
+      :move-target (send *pr2* :rarm :end-coords)
       :rotation-axis t
       :debug-view t
       :p-limit 10 :r-limit 0.05
       :cog-null-space t)
 
-(send *ri* :angle-vector (send *fetch* :angle-vector) 5000)
+(send *ri* :angle-vector (send *pr2* :angle-vector) 5000)
 (send *ri* :wait-interpolation)
 
-(setq *table-spot* (make-cascoords :pos #f(3200 500 0) :rpy (float-vector pi/2 0 0)))
-(send *fetch* :move-to *table-spot* :world)
-(send *irtviewer* :look-all *fetch*)
+(do-until-key
+ (x::window-main-one)
+ )
+
+(setq *table-spot* (make-cascoords :pos #f(3000 7000 30002) :rpy (float-vector pi/2 0 0)))
+(send *pr2* :move-to *table-spot* :world)
+(send *irtviewer* :look-all *pr2*)
 (send *ri* :move-to *table-spot* :fram-id "/map")
