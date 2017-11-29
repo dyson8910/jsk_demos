@@ -9,7 +9,7 @@
 (setq *scene* (make-eng2-scene))
 
 (send *pr2* :move-to (send (send *scene* :spot "/eng2/7f/room73B2-door-front") :worldcoords) :world)
-(send *ri* :move-to (send (send *scene* :spot "/eng2/7f/room73B2-door-front") :worldcoords))
+(send *ri* :move-to (send (send *scene* :spot "/eng2/7f/room73B2-door-front") :worldcoords) :frame-id "eng2")
 (objects (list *pr2* *scene*))
 (send *irtviewer* :look-all *pr2*)
 
@@ -17,13 +17,14 @@
  (x::window-main-one)
  )
 
-(send *pr2* :move-to (send (send *scene* :spot "cook-spot") :worldcoords) :world)
+(setq *cook-spot* (make-coords :pos #f(1200 8500 30002)))
+(send *cook-spot* :rotate pi :z)
 
-(send *ri* :move-to (send (send *scene* :spot "cook-spot") :worldcoords))
+(send *pr2* :move-to *cook-spot* :world)
+(send *ri* :move-to *cook-spot* :frame-id "eng2")
 (send *ri* :wait-interpolation)
 (objects (list *pr2* *scene*))
-(send *irtviewer* :look-all *pr2*)
-
+(send *irtviewer* :look-all *pr2*)  
 (send *ri* :wait-interpolation)
 
 (setq *IH-button* (make-coords :pos #f(660 8470 30702)))
@@ -44,7 +45,7 @@
       :link-list (send *pr2* :link-list (send *pr2* :rarm :end-coords :parent))
       :move-target (send *pr2* :rarm :end-coords)
       :rotation-axis :x
-      :debug-view t :p-limit 10 :r-limit 0.05;;
+      :debug-view :no-message :p-limit 10 :r-limit 0.05;;
       :cog-null-space t
       )
 
@@ -59,7 +60,7 @@
       :link-list (send *pr2* :link-list (send *pr2* :rarm :end-coords :parent))
       :move-target (send *pr2* :rarm :end-coords)
       :rotation-axis :x
-      :debug-view t :p-limit 10 :r-limit 0.05;;
+      :debug-view :no-message :p-limit 10 :r-limit 0.05;;
       :cog-null-space t
       )
 
@@ -74,7 +75,7 @@
       :link-list (send *pr2* :link-list (send *pr2* :rarm :end-coords :parent))
       :move-target (send *pr2* :rarm :end-coords)
       :rotation-axis :x
-      :debug-view t :p-limit 10 :r-limit 0.05;;
+      :debug-view :no-message :p-limit 10 :r-limit 0.05;;
       :cog-null-space t
       )
 
