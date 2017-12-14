@@ -1,21 +1,21 @@
 <launch>
   <node name="image_siftnode" pkg="imagesift" type="imagesift"
   	output="screen" >
-	<remap from="image" to="kinect_head/rgb/throttled/image_rect_color" />
-        <remap from="camera_info" to="kinect_head/rgb/throttled/camera_info" />
+	<remap from="image" to="narrow_stereo/left/image_rect_color" />
+        <remap from="camera_info" to="narrow_stereo/left/camera_info" />
   </node>
 
-  <node name="point_pose_extractor" pkg="jsk_perception"
+  <node name="point_pose_extractor_button" pkg="jsk_perception"
   	type="point_pose_extractor" clear_params="true">
 	<!-- <param name="child_frame_name" value="button"/> -->
 	<param name="template_filename" value="$(find jsk_2017_10_semi)/data/button.png"/>
-	<param name="object_width" value="0.148" />
-	<param name="object_height" value="0.229" />
-	<param name="reprojection_threshold" value="15" />  <!-- TODO 10 3.0 -->
+	<param name="object_width" value="0.597" />
+	<param name="object_height" value="0.285" />
+	<param name="reprojection_threshold" value="10" />  <!-- TODO 10 3.0 -->
 	<param name="distanceratio_threshold" value="0.6" /> <!-- TODO 0.6 0.49 -->
 	<param name="relative_pose" value="0 0 0 0 0 0 1" />    <!-- TODO quaternion expression -->
 	<!-- <param name="relative_pose" value="0 0 0 0 0 0" / --> <!-- you can also use rpy expression. -->
-	<param name="error_threshold" value="5.0" />
+	<param name="error_threshold" value="30.0" />
 	<param name="window_name" value="button" />
 	<!-- <param name="viewer_window" value="false" />  -->
   </node>
