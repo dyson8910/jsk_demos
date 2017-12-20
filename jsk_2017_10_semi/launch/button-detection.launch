@@ -1,5 +1,5 @@
 <launch>
-  <node name="image_siftnode" pkg="imagesift" type="imagesift"
+  <node name="image_siftnode_button" pkg="imagesift" type="imagesift"
   	output="screen" >
 	<remap from="image" to="narrow_stereo/left/image_rect_color" />
         <remap from="camera_info" to="narrow_stereo/left/camera_info" />
