@@ -22,7 +22,7 @@
 	  )
       (progn
 	(while (null (setq cds (check-detection :type "button" :speak-name "IHbutton" :timeout 10 :speak nil :single t))) 
-	  (print "not detect button")
+	  (print "button not detected")
 	  )
 	(setq *kitchen-panel* (make-coords :coords (send (send *pr2* :worldcoords) :copy-coords)))
 	(send *kitchen-panel* :move-to (make-cascoords :pos (send cds :pos)))
@@ -213,8 +213,8 @@
 	  (setq *cup-noodle* (make-cascoords :pos #f(500 8600 31002)))
 	  )
       (progn
-        (while (null (setq cds (check-detection :type "noodle" :speak-name "cup-noodle" :timeout 10 :speak nil :single t))))
-	  (print "not detect cup-noodle")
+        (while (null (setq cds (check-detection :type "marker" :speak-name "marker" :timeout 10 :speak nil :single t))))
+	  (print "marker not detected")
 	  )
 	(setq *cup-noodle* (make-cascoords :coords (send (send *pr2* :worldcoords) :copy-coords)))
 	(send *cup-noodle* :move-to (make-cascoords :coords (send cds :coords)))
