@@ -15,7 +15,7 @@
 	<param name="distanceratio_threshold" value="0.6" /> <!-- TODO 0.6 0.49 -->
 	<param name="relative_pose" value="0 0 0 0 0 0 1" />    <!-- TODO quaternion expression -->
 	<!-- <param name="relative_pose" value="0 0 0 0 0 0" / --> <!-- you can also use rpy expression. -->
-	<param name="error_threshold" value="30.0" />
+	<param name="error_threshold" value="25.0" />
 	<param name="window_name" value="marker" />
 	<!-- <param name="viewer_window" value="false" />  -->
   </node>
